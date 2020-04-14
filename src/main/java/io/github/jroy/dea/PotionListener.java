@@ -79,7 +79,7 @@ public class PotionListener implements Listener {
       }
       illegalMessage.append("-=-=-=-=-=-=-=-=-=-=-=-=-");
       webhookClient.send(illegalMessage.toString());
-      Bukkit.getScheduler().runTaskLaterAsynchronously(dea, () -> {
+      Bukkit.getScheduler().runTaskLater(dea, () -> {
         for (PotionEffect effect : player.getActivePotionEffects()) {
           player.removePotionEffect(effect.getType());
         }
