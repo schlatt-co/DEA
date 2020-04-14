@@ -1,0 +1,24 @@
+package io.github.jroy.dea;
+
+import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.WebhookClientBuilder;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
+
+public class DEA extends JavaPlugin {
+
+  @Override
+  public void onEnable() {
+    getConfig().addDefault("webhookUrl", "url");
+    getConfig().options().copyDefaults(true);
+    saveConfig();
+    if (Objects.requireNonNull(getConfig().getString("webhookUrl")).equals("url")) {
+      getLogger().severe("Invalid webhook url!");
+      return;
+    }
+    getLogger().info("Registering webhook...");
+    WebhookClient client = new WebhookClientBuilder(Objects.requireNonNull(getConfig().getString("webhookUrl"))).setDaemon(true).build();
+    getServer().getPluginManager().registerEvents(new PotionListener(client), this);
+  }
+}

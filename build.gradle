@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group 'io.github.jroy'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly "com.github.schlatt-co:PluginLibrary:c65436d5b6"
+    compileOnly "org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT"
+}
+
+configurations {
+    all*.exclude group: 'org.spigot', module: 'spigot-api'
+    all*.exclude module: 'bukkit'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
