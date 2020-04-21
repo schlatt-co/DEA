@@ -19,6 +19,7 @@ repositories {
 dependencies {
     compileOnly "com.github.schlatt-co:PluginLibrary:c65436d5b6"
     compileOnly "org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT"
+    compileOnly files('libs/ChestShop.jar')
 }
 
 configurations {

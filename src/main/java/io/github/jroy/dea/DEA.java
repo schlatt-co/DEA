@@ -21,5 +21,8 @@ public class DEA extends JavaPlugin {
     WebhookClient client = new WebhookClientBuilder(Objects.requireNonNull(getConfig().getString("webhookUrl"))).setDaemon(true).build();
     getServer().getPluginManager().registerEvents(new PotionListener(this, client), this);
     getServer().getPluginManager().registerEvents(new FortuneListener(client), this);
+    if (getServer().getPluginManager().getPlugin("ChestShop") != null) {
+      getServer().getPluginManager().registerEvents(new ShopListener(client), this);
+    }
   }
 }
