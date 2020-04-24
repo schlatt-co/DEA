@@ -23,10 +23,11 @@ public class ShopListener implements Listener {
     String transactionType = " bought ";
     if (event.getTransactionType() == TransactionEvent.TransactionType.SELL) {
       transactionType = " sold ";
+      // Only log transactions < $5000 if they are a sell sign
+      webhookClient.send(event.getClient().getName() + transactionType + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()) + " from " + event.getSign().getLine(0));
     }
     if (event.getExactPrice().abs().doubleValue() >= 5000) {
       prioClient.send(event.getClient().getName() + transactionType + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()) + " from " + event.getSign().getLine(0));
     }
-    webhookClient.send(event.getClient().getName() + transactionType + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()) + " from " + event.getSign().getLine(0));
   }
 }
