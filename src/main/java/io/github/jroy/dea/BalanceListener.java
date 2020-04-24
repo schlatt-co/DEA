@@ -11,9 +11,11 @@ import java.math.BigDecimal;
 public class BalanceListener implements Listener {
 
   private final WebhookClient webhookClient;
+  private final WebhookClient prioClient;
 
-  public BalanceListener(WebhookClient webhookClient) {
+  public BalanceListener(WebhookClient webhookClient, WebhookClient prioClient) {
     this.webhookClient = webhookClient;
+    this.prioClient = prioClient;
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
@@ -21,5 +23,8 @@ public class BalanceListener implements Listener {
     BigDecimal diff = event.getNewBalance().subtract(event.getOldBalance());
     String modifier = diff.signum() == -1 ? "decreased" : "increased";
     webhookClient.send(event.getPlayer().getName() + "'s balance " + modifier + " by $" + diff.toString());
+    if (diff.abs().doubleValue() >= 5000) {
+      prioClient.send(event.getPlayer().getName() + "'s balance " + modifier + " by $" + diff.toString());
+    }
   }
 }

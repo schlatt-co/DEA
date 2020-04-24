@@ -11,9 +11,11 @@ import org.bukkit.inventory.ItemStack;
 public class FortuneListener implements Listener {
 
   private final WebhookClient client;
+  private final WebhookClient prioClient;
 
-  public FortuneListener(WebhookClient client) {
+  public FortuneListener(WebhookClient client, WebhookClient prioClient) {
     this.client = client;
+    this.prioClient = prioClient;
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -21,6 +23,7 @@ public class FortuneListener implements Listener {
     ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
     if (item.getEnchantments().containsKey(Enchantment.LOOT_BONUS_BLOCKS) && item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) > 3) {
       client.send(event.getPlayer().getName() + " has used a fortune " + item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + " item!");
+      prioClient.send(event.getPlayer().getName() + " has used a fortune " + item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + " item!");
       event.getPlayer().getInventory().remove(item);
       event.setCancelled(true);
     }
