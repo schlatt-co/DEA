@@ -26,10 +26,12 @@ public class PotionListener implements Listener {
 
   private final DEA dea;
   private final WebhookClient webhookClient;
+  private final WebhookClient prioClient;
 
-  public PotionListener(DEA dea, WebhookClient webhookClient) {
+  public PotionListener(DEA dea, WebhookClient webhookClient, WebhookClient prioClient) {
     this.dea = dea;
     this.webhookClient = webhookClient;
+    this.prioClient = prioClient;
   }
 
   @EventHandler
@@ -79,6 +81,7 @@ public class PotionListener implements Listener {
       }
       illegalMessage.append("-=-=-=-=-=-=-=-=-=-=-=-=-");
       webhookClient.send(illegalMessage.toString());
+      prioClient.send(illegalMessage.toString());
       Bukkit.getScheduler().runTaskLater(dea, () -> {
         for (PotionEffect effect : player.getActivePotionEffects()) {
           player.removePotionEffect(effect.getType());
