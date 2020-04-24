@@ -22,8 +22,9 @@ public class FortuneListener implements Listener {
   public void onBlockMine(BlockBreakEvent event) {
     ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
     if (item.getEnchantments().containsKey(Enchantment.LOOT_BONUS_BLOCKS) && item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) > 3) {
-      client.send(event.getPlayer().getName() + " has used a fortune " + item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + " item!");
-      prioClient.send(event.getPlayer().getName() + " has used a fortune " + item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + " item!");
+      String msg = event.getPlayer().getName() + " has used a fortune " + item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + " item!";
+      client.send(msg);
+      prioClient.send(msg);
       event.getPlayer().getInventory().remove(item);
       event.setCancelled(true);
     }
