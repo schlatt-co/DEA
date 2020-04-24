@@ -19,7 +19,7 @@ public class ShopListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onTransaction(TransactionEvent event) {
     if (event.getTransactionType() == TransactionEvent.TransactionType.SELL) {
-      webhookClient.send(event.getClient() + " sold " + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()));
+      webhookClient.send(event.getClient().getName() + " sold " + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()));
     }
   }
 }
