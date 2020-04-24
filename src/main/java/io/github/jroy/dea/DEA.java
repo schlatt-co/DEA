@@ -25,5 +25,8 @@ public class DEA extends JavaPlugin {
     if (getServer().getPluginManager().getPlugin("ChestShop") != null) {
       getServer().getPluginManager().registerEvents(new ShopListener(client), this);
     }
+    if (getServer().getPluginManager().getPlugin("Essentials") != null) {
+      getServer().getPluginManager().registerEvents(new BalanceListener(client), this);
+    }
   }
 }
