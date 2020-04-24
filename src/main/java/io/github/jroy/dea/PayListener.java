@@ -34,12 +34,13 @@ public class PayListener implements Listener {
     String regex = "/pay ([^\\s]+) (\\d*\\.?\\d*)";
     Pattern p = Pattern.compile(regex);
     Matcher m = p.matcher(msg);
-    if (m.find() && m.groupCount() >= 3) {
+    if (m.find() && m.groupCount() >= 2) {
       String name = m.group(1);
       double amount = Double.parseDouble(m.group(2));
       return (amount >= threshold);
     } else {
       prioClient.send("Error parsing \"" + msg + "\"");
+      System.out.println(m.groupCount());
     }
     return false;
   }
