@@ -11,7 +11,7 @@ public class DEA extends JavaPlugin {
   @Override
   public void onEnable() {
     getConfig().addDefault("webhookUrl", "url");
-    getConfig().addDefault("webhookUrlPrio", "url");
+    getConfig().addDefault("ebhookUrlPrio", "url");
     getConfig().options().copyDefaults(true);
     saveConfig();
     if (Objects.requireNonNull(getConfig().getString("webhookUrl")).equals("url")
@@ -23,14 +23,16 @@ public class DEA extends JavaPlugin {
     WebhookClient client = new WebhookClientBuilder(Objects.requireNonNull(getConfig().getString("webhookUrl"))).setDaemon(true).build();
     WebhookClient prioClient = new WebhookClientBuilder(Objects.requireNonNull(getConfig().getString("webhookUrlPrio"))).setDaemon(true).build();
 
-    getServer().getPluginManager().registerEvents(new PotionListener(this, client, prioClient), this);
-    getServer().getPluginManager().registerEvents(new FortuneListener(client, prioClient), this);
-    getServer().getPluginManager().registerEvents(new PayListener(client, prioClient), this);
+    new WebhookManager(client, prioClient);
+
+    getServer().getPluginManager().registerEvents(new PotionListener(this), this);
+    getServer().getPluginManager().registerEvents(new FortuneListener(), this);
+    getServer().getPluginManager().registerEvents(new PayListener(), this);
     if (getServer().getPluginManager().getPlugin("ChestShop") != null) {
-      getServer().getPluginManager().registerEvents(new ShopListener(client, prioClient), this);
+      getServer().getPluginManager().registerEvents(new ShopListener(), this);
     }
     if (getServer().getPluginManager().getPlugin("Essentials") != null) {
-      getServer().getPluginManager().registerEvents(new BalanceListener(client, prioClient), this);
+      getServer().getPluginManager().registerEvents(new BalanceListener(), this);
     }
   }
 }
