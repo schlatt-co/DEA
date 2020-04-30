@@ -11,14 +11,6 @@ import java.util.regex.Pattern;
 
 public class PayListener implements Listener {
 
-  private final WebhookClient webhookClient;
-  private final WebhookClient prioClient;
-
-  public PayListener(WebhookClient webhookClient, WebhookClient prioClient) {
-    this.webhookClient = webhookClient;
-    this.prioClient = prioClient;
-  }
-
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPayCommand(PlayerCommandPreprocessEvent event) {
     String msg = event.getMessage().replace("/", "");
@@ -36,7 +28,7 @@ public class PayListener implements Listener {
       double amount = Double.parseDouble(m.group(2));
       return (amount >= threshold);
     } else {
-      prioClient.send("Error parsing \"" + msg + "\"");
+      WebhookManager.getInstance().sendMessage("Error parsing \"" + msg + "\"", true);
       System.out.println(m.groupCount());
     }
     return false;
