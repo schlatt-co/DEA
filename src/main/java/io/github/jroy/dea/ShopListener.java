@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import com.Acrobot.Breeze.Utils.MaterialUtil;
 import com.Acrobot.ChestShop.Economy.Economy;
 import com.Acrobot.ChestShop.Events.TransactionEvent;

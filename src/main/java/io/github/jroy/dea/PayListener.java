@@ -1,7 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

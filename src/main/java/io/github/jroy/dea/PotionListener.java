@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;

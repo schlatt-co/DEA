@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import net.ess3.api.events.UserBalanceUpdateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

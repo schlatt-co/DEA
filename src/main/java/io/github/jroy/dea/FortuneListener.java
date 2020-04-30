@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
