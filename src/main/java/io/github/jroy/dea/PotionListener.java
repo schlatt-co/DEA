@@ -72,14 +72,14 @@ public class PotionListener implements Listener {
     }
     if (illegal) {
       Location l = player.getLocation();
-      StringBuilder illegalMessage = new StringBuilder("-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+      StringBuilder illegalMessage = new StringBuilder("\uD83C\uDF7E\uD83C\uDF7E-=-=-=-=-=-=-=-=-=-=-=-=-\uD83C\uDF7E\uD83C\uDF7E\n");
       illegalMessage.append(player.getName()).append(" just drank an illegal potion!\n");
       illegalMessage.append("At coords: x=").append(l.getBlockX()).append(", y=").append(l.getBlockY()).append(", z=").append(l.getBlockZ()).append("\n");
       illegalMessage.append(Timestamp.from(Instant.now()).toString()).append("\n");
       for (final PotionEffect customEffect : effects) {
         illegalMessage.append("[").append(customEffect.getType().getName()).append(", ").append(customEffect.getDuration()).append(" ticks, level ").append(customEffect.getAmplifier()).append("]\n");
       }
-      illegalMessage.append("-=-=-=-=-=-=-=-=-=-=-=-=-");
+      illegalMessage.append("\uD83C\uDF7E\uD83C\uDF7E-=-=-=-=-=-=-=-=-=-=-=-=-\uD83C\uDF7E\uD83C\uDF7E");
       webhookClient.send(illegalMessage.toString());
       prioClient.send(illegalMessage.toString());
       Bukkit.getScheduler().runTaskLater(dea, () -> {

@@ -21,11 +21,11 @@ public class PayListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPayCommand(PlayerCommandPreprocessEvent event) {
-    String msg = event.getMessage();
-    if (msg.replace("/", "").startsWith("pay")) {
-      webhookClient.send(event.getPlayer().getName() + " executed " + msg);
+    String msg = event.getMessage().replace("/", "");
+    if (msg.startsWith("pay")) {
+      webhookClient.send("\uD83D\uDCBB" + event.getPlayer().getName() + " executed " + msg);
       if (amountAboveThreshold(msg, 5000)) {
-        prioClient.send(event.getPlayer().getName() + " executed " + msg);
+        prioClient.send("\uD83D\uDCBB" + event.getPlayer().getName() + " executed " + msg);
       }
     }
   }

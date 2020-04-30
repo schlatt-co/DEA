@@ -20,15 +20,15 @@ public class ShopListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onTransaction(TransactionEvent event) {
-    String transactionType = " bought ";
-    String msg = event.getClient().getName() + transactionType + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()) + " from " + event.getSign().getLine(0);
+    String transactionType = "bought";
+    String msg = "\uD83D\uDED2" + event.getClient().getName() + " %s " + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()) + " from " + event.getSign().getLine(0) + "\uD83D\uDED2";
     if (event.getTransactionType() == TransactionEvent.TransactionType.SELL) {
-      transactionType = " sold ";
+      transactionType = "sold";
       // Only log transactions < $5000 if they are a sell sign
-      webhookClient.send(msg);
+      webhookClient.send(String.format(msg, transactionType));
     }
     if (event.getExactPrice().abs().doubleValue() >= 5000) {
-      prioClient.send(msg);
+      prioClient.send(String.format(msg, transactionType));
     }
   }
 }
