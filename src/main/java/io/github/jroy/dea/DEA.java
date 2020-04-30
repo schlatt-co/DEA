@@ -11,7 +11,7 @@ public class DEA extends JavaPlugin {
   @Override
   public void onEnable() {
     getConfig().addDefault("webhookUrl", "url");
-    getConfig().addDefault("ebhookUrlPrio", "url");
+    getConfig().addDefault("webhookUrlPrio", "url");
     getConfig().options().copyDefaults(true);
     saveConfig();
     if (Objects.requireNonNull(getConfig().getString("webhookUrl")).equals("url")

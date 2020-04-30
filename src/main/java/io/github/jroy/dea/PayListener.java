@@ -11,13 +11,19 @@ import java.util.regex.Pattern;
 
 public class PayListener implements Listener {
 
+  private final WebhookClient webhookClient;
+  private final WebhookClient prioClient;
+
+  public PayListener(WebhookClient webhookClient, WebhookClient prioClient) {
+    this.webhookClient = webhookClient;
+    this.prioClient = prioClient;
+  }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPayCommand(PlayerCommandPreprocessEvent event) {
-    String msg = event.getMessage();
-    if (msg.replace("/", "").startsWith("pay")) {
-      WebhookManager.getInstance().sendMessage(event.getPlayer().getName() + " executed " + msg,
-          amountAboveThreshold(msg, 5000));
+    String msg = event.getMessage().replace("/", "");
+    if (msg.startsWith("pay")) {
+      WebhookManager.getInstance().sendMessage("\uD83D\uDCBB" + event.getPlayer().getName() + " executed " + msg, amountAboveThreshold(msg, 5000));
     }
   }
 
@@ -30,7 +36,7 @@ public class PayListener implements Listener {
       double amount = Double.parseDouble(m.group(2));
       return (amount >= threshold);
     } else {
-      WebhookManager.getInstance().sendMessage("Error parsing \"" + msg + "\"", true);
+      prioClient.send("Error parsing \"" + msg + "\"");
       System.out.println(m.groupCount());
     }
     return false;
