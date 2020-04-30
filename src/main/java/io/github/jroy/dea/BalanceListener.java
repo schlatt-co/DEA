@@ -11,6 +11,12 @@ import java.text.DecimalFormat;
 
 public class BalanceListener implements Listener {
 
+  private final WebhookManager webhookManager;
+
+  public BalanceListener(WebhookManager webhookManager) {
+    this.webhookManager = webhookManager;
+  }
+
   @EventHandler(priority = EventPriority.MONITOR)
   public void onBalanceUpdate(UserBalanceUpdateEvent event) {
     BigDecimal diff = event.getNewBalance().subtract(event.getOldBalance());
@@ -27,6 +33,6 @@ public class BalanceListener implements Listener {
     String modifier = diff.signum() == -1 ? "decreased" : "increased";
     String emote = diff.signum() == -1 ? ":small_red_triangle_down:" : ":small_red_triangle:";
     String msg = emote + "`" + event.getPlayer().getName() + "`'s balance " + modifier + " by `$" + df.format(diff) + "`";
-    WebhookManager.getInstance().sendMessage(msg, diff.abs().doubleValue() >= 5000);
+    webhookManager.sendMessage(msg, diff.abs().doubleValue() >= 5000);
   }
 }

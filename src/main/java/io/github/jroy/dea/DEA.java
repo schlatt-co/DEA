@@ -23,16 +23,16 @@ public class DEA extends JavaPlugin {
     WebhookClient client = new WebhookClientBuilder(Objects.requireNonNull(getConfig().getString("webhookUrl"))).setDaemon(true).build();
     WebhookClient prioClient = new WebhookClientBuilder(Objects.requireNonNull(getConfig().getString("webhookUrlPrio"))).setDaemon(true).build();
 
-    new WebhookManager(client, prioClient);
+    WebhookManager webhookManager = new WebhookManager(client, prioClient);
 
-    getServer().getPluginManager().registerEvents(new PotionListener(this), this);
-    getServer().getPluginManager().registerEvents(new FortuneListener(), this);
-    getServer().getPluginManager().registerEvents(new PayListener(), this);
+    getServer().getPluginManager().registerEvents(new PotionListener(this, webhookManager), this);
+    getServer().getPluginManager().registerEvents(new FortuneListener(webhookManager), this);
+    getServer().getPluginManager().registerEvents(new PayListener(webhookManager), this);
     if (getServer().getPluginManager().getPlugin("ChestShop") != null) {
-      getServer().getPluginManager().registerEvents(new ShopListener(), this);
+      getServer().getPluginManager().registerEvents(new ShopListener(webhookManager), this);
     }
     if (getServer().getPluginManager().getPlugin("Essentials") != null) {
-      getServer().getPluginManager().registerEvents(new BalanceListener(), this);
+      getServer().getPluginManager().registerEvents(new BalanceListener(webhookManager), this);
     }
   }
 }

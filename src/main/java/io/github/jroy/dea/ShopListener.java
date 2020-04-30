@@ -9,6 +9,12 @@ import org.bukkit.event.Listener;
 
 public class ShopListener implements Listener {
 
+  private final WebhookManager webhookManager;
+
+  public ShopListener(WebhookManager webhookManager) {
+    this.webhookManager = webhookManager;
+  }
+
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onTransaction(TransactionEvent event) {
     /*
@@ -19,19 +25,19 @@ public class ShopListener implements Listener {
     double value = event.getExactPrice().doubleValue();
     if (value == 0) return;
     String verb = "sold";
-    String preposition = "to";
+//    String preposition = "to";
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY) {
       verb = "bought";
-      preposition = "from";
+//      preposition = "from";
     }
 
     String message = ":shopping_cart:`" + event.getClient().getName() + "` " + verb + " `" +
         MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "`";
 
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
-      WebhookManager.getInstance().sendMessage(message, true);
+      webhookManager.sendMessage(message, true);
     } else {
-      WebhookManager.getInstance().sendMessage(message, value >= 5000);
+      webhookManager.sendMessage(message, value >= 5000);
     }
   }
 }

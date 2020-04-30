@@ -9,16 +9,21 @@ import org.bukkit.inventory.ItemStack;
 
 public class FortuneListener implements Listener {
 
+  private final WebhookManager webhookManager;
+
+  public FortuneListener(WebhookManager webhookManager) {
+    this.webhookManager = webhookManager;
+  }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onBlockMine(BlockBreakEvent event) {
     ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
     if (item.getEnchantments().containsKey(Enchantment.LOOT_BONUS_BLOCKS) && item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) > 3) {
-      StringBuilder msg = new StringBuilder(":warning::warning::warning::warning::warning::warning:\n")
-          .append(":tools:`").append(event.getPlayer().getName()).append("` has used a `fortune ")
-          .append(item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS)).append("` item!\n")
-          .append(":warning::warning::warning::warning::warning::warning:");
-      WebhookManager.getInstance().sendMessage(msg.toString(), true);
+      String msg = ":warning::warning::warning::warning::warning::warning:\n" +
+          ":tools:`" + event.getPlayer().getName() + "` has used a `fortune " +
+          item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + "` item!\n" +
+          ":warning::warning::warning::warning::warning::warning:";
+      webhookManager.sendMessage(msg, true);
       event.getPlayer().getInventory().remove(item);
       event.setCancelled(true);
     }
