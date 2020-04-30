@@ -1,6 +1,7 @@
 package io.github.jroy.dea;
 
 import club.minnced.discord.webhook.WebhookClient;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,24 +15,23 @@ public class PayListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPayCommand(PlayerCommandPreprocessEvent event) {
     String msg = event.getMessage().replace("/", "");
-    if (msg.startsWith("pay")) {
-      WebhookManager.getInstance().sendMessage("\uD83D\uDCBB" + event.getPlayer().getName() + " executed " + msg, amountAboveThreshold(msg, 5000));
+    if (!msg.startsWith("pay")) {
+      return;
     }
-  }
-
-  private boolean amountAboveThreshold(String msg, double threshold) {
-    String regex = "/pay ([^\\s]+) (\\d*\\.?\\d*)";
+    String regex = "pay ([^\\s]+) (\\d*\\.?\\d*)";
     Pattern p = Pattern.compile(regex);
     Matcher m = p.matcher(msg);
-    if (m.find() && m.groupCount() >= 2) {
-      String name = m.group(1);
-      double amount = Double.parseDouble(m.group(2));
-      return (amount >= threshold);
-    } else {
+    if (m.find() && m.groupCount() != 2) {
       WebhookManager.getInstance().sendMessage("Error parsing \"" + msg + "\"", true);
       System.out.println(m.groupCount());
+      System.out.println(msg);
+      return;
     }
-    return false;
+    String sender = event.getPlayer().getName();
+    String target = m.group(1);
+    String amountString = m.group(2);
+    double amount = Double.parseDouble(amountString);
+    WebhookManager.getInstance().sendMessage(":dollar:`" + sender + "` paid `" + target + "` `$" + amountString + "`",
+        amount >= 5000);
   }
-
 }

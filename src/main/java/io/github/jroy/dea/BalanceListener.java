@@ -17,14 +17,17 @@ public class BalanceListener implements Listener {
     BigDecimal diff = event.getNewBalance().subtract(event.getOldBalance());
     diff = diff.setScale(2, RoundingMode.DOWN);
 
+    // Don't show 0 value transactions
+    if (diff.doubleValue() == 0) return;
+
     DecimalFormat df = new DecimalFormat();
     df.setMaximumFractionDigits(2);
     df.setMinimumFractionDigits(0);
     df.setGroupingUsed(false);
 
     String modifier = diff.signum() == -1 ? "decreased" : "increased";
-    String emote = diff.signum() == -1 ? "\uD83E\uDD75" : "\uD83E\uDD11";
-    String msg = emote + event.getPlayer().getName() + "'s balance " + modifier + " by $" + df.format(diff) + emote;
+    String emote = diff.signum() == -1 ? ":small_red_triangle_down:" : ":small_red_triangle:";
+    String msg = emote + "`" + event.getPlayer().getName() + "`'s balance " + modifier + " by `$" + df.format(diff) + "`";
     WebhookManager.getInstance().sendMessage(msg, diff.abs().doubleValue() >= 5000);
   }
 }
