@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -11,38 +10,26 @@ import java.util.regex.Pattern;
 
 public class PayListener implements Listener {
 
-  private final WebhookClient webhookClient;
-  private final WebhookClient prioClient;
-
-  public PayListener(WebhookClient webhookClient, WebhookClient prioClient) {
-    this.webhookClient = webhookClient;
-    this.prioClient = prioClient;
-  }
-
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPayCommand(PlayerCommandPreprocessEvent event) {
     String msg = event.getMessage().replace("/", "");
-    if (msg.startsWith("pay")) {
-      webhookClient.send("\uD83D\uDCBB" + event.getPlayer().getName() + " executed " + msg);
-      if (amountAboveThreshold(msg, 5000)) {
-        prioClient.send("\uD83D\uDCBB" + event.getPlayer().getName() + " executed " + msg);
-      }
+    if (!msg.startsWith("pay")) {
+      return;
     }
-  }
-
-  private boolean amountAboveThreshold(String msg, double threshold) {
-    String regex = "/pay ([^\\s]+) (\\d*\\.?\\d*)";
+    String regex = "pay ([^\\s]+) (\\d*\\.?\\d*)";
     Pattern p = Pattern.compile(regex);
     Matcher m = p.matcher(msg);
-    if (m.find() && m.groupCount() >= 2) {
-      String name = m.group(1);
-      double amount = Double.parseDouble(m.group(2));
-      return (amount >= threshold);
-    } else {
-      prioClient.send("Error parsing \"" + msg + "\"");
+    if (m.find() && m.groupCount() != 2) {
+      WebhookManager.getInstance().sendMessage("Error parsing \"" + msg + "\"", true);
       System.out.println(m.groupCount());
+      System.out.println(msg);
+      return;
     }
-    return false;
+    String sender = event.getPlayer().getName();
+    String target = m.group(1);
+    String amountString = m.group(2);
+    double amount = Double.parseDouble(amountString);
+    WebhookManager.getInstance().sendMessage(":dollar:`" + sender + "` paid `" + target + "` `$" + amountString + "`",
+        amount >= 5000);
   }
-
 }

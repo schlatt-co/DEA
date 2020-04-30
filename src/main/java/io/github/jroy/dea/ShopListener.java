@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import com.Acrobot.Breeze.Utils.MaterialUtil;
 import com.Acrobot.ChestShop.Economy.Economy;
 import com.Acrobot.ChestShop.Events.TransactionEvent;
@@ -10,25 +9,29 @@ import org.bukkit.event.Listener;
 
 public class ShopListener implements Listener {
 
-  private final WebhookClient webhookClient;
-  private final WebhookClient prioClient;
-
-  public ShopListener(WebhookClient webhookClient, WebhookClient prioClient) {
-    this.webhookClient = webhookClient;
-    this.prioClient = prioClient;
-  }
-
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onTransaction(TransactionEvent event) {
-    String transactionType = "bought";
-    String msg = "\uD83D\uDED2" + event.getClient().getName() + " %s " + MaterialUtil.getItemList(event.getStock()) + " @ " + Economy.formatBalance(event.getExactPrice()) + " from " + event.getSign().getLine(0) + "\uD83D\uDED2";
-    if (event.getTransactionType() == TransactionEvent.TransactionType.SELL) {
-      transactionType = "sold";
-      // Only log transactions < $5000 if they are a sell sign
-      webhookClient.send(String.format(msg, transactionType));
+    /*
+      Notifications:
+      All sells > $0
+      All buys > $5000
+    */
+    double value = event.getExactPrice().doubleValue();
+    if (value == 0) return;
+    String verb = "sold";
+    String preposition = "to";
+    if (event.getTransactionType() == TransactionEvent.TransactionType.BUY) {
+      verb = "bought";
+      preposition = "from";
     }
-    if (event.getExactPrice().abs().doubleValue() >= 5000) {
-      prioClient.send(String.format(msg, transactionType));
+
+    String message = ":shopping_cart:`" + event.getClient().getName() + "` " + verb + " `" +
+        MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "`";
+
+    if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
+      WebhookManager.getInstance().sendMessage(message, true);
+    } else {
+      WebhookManager.getInstance().sendMessage(message, value >= 5000);
     }
   }
 }

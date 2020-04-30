@@ -1,6 +1,5 @@
 package io.github.jroy.dea;
 
-import club.minnced.discord.webhook.WebhookClient;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
@@ -25,13 +24,9 @@ public class PotionListener implements Listener {
   };
 
   private final DEA dea;
-  private final WebhookClient webhookClient;
-  private final WebhookClient prioClient;
 
-  public PotionListener(DEA dea, WebhookClient webhookClient, WebhookClient prioClient) {
+  public PotionListener(DEA dea) {
     this.dea = dea;
-    this.webhookClient = webhookClient;
-    this.prioClient = prioClient;
   }
 
   @EventHandler
@@ -72,16 +67,15 @@ public class PotionListener implements Listener {
     }
     if (illegal) {
       Location l = player.getLocation();
-      StringBuilder illegalMessage = new StringBuilder("\uD83C\uDF7E\uD83C\uDF7E-=-=-=-=-=-=-=-=-=-=-=-=-\uD83C\uDF7E\uD83C\uDF7E\n");
-      illegalMessage.append(player.getName()).append(" just drank an illegal potion!\n");
+      StringBuilder illegalMessage = new StringBuilder(":warning::warning::warning::warning::warning::warning:\n");
+      illegalMessage.append("`").append(player.getName()).append("` drank an illegal potion!\n");
       illegalMessage.append("At coords: x=").append(l.getBlockX()).append(", y=").append(l.getBlockY()).append(", z=").append(l.getBlockZ()).append("\n");
       illegalMessage.append(Timestamp.from(Instant.now()).toString()).append("\n");
       for (final PotionEffect customEffect : effects) {
         illegalMessage.append("[").append(customEffect.getType().getName()).append(", ").append(customEffect.getDuration()).append(" ticks, level ").append(customEffect.getAmplifier()).append("]\n");
       }
-      illegalMessage.append("\uD83C\uDF7E\uD83C\uDF7E-=-=-=-=-=-=-=-=-=-=-=-=-\uD83C\uDF7E\uD83C\uDF7E");
-      webhookClient.send(illegalMessage.toString());
-      prioClient.send(illegalMessage.toString());
+      illegalMessage.append(":warning::warning::warning::warning::warning::warning:");
+      WebhookManager.getInstance().sendMessage(illegalMessage.toString(), true);
       Bukkit.getScheduler().runTaskLater(dea, () -> {
         for (PotionEffect effect : player.getActivePotionEffects()) {
           player.removePotionEffect(effect.getType());
