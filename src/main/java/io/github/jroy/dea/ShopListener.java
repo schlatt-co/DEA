@@ -25,14 +25,15 @@ public class ShopListener implements Listener {
     double value = event.getExactPrice().doubleValue();
     if (value == 0) return;
     String verb = "sold";
-//    String preposition = "to";
+    String preposition = "to";
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY) {
       verb = "bought";
-//      preposition = "from";
+      preposition = "from";
     }
 
     String message = ":shopping_cart:`" + event.getClient().getName() + "` " + verb + " `" +
-        MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "`";
+        MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "` "
+        + preposition + " `" + event.getSign().getLine(0) + "`";
 
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
       webhookManager.sendMessage(message, true);
