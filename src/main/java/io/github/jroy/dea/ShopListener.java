@@ -3,6 +3,7 @@ package io.github.jroy.dea;
 import com.Acrobot.Breeze.Utils.MaterialUtil;
 import com.Acrobot.ChestShop.Economy.Economy;
 import com.Acrobot.ChestShop.Events.TransactionEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -33,7 +34,7 @@ public class ShopListener implements Listener {
 
     String message = ":shopping_cart:`" + event.getClient().getName() + "` " + verb + " `" +
         MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "` "
-        + preposition + " `" + event.getSign().getLine(0) + "`";
+        + preposition + " `" + ChatColor.stripColor(event.getSign().getLine(0)) + "`";
 
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
       webhookManager.sendMessage(message, true);
