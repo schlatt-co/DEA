@@ -1,8 +1,5 @@
 package io.github.jroy.dea;
 
-import com.Acrobot.Breeze.Utils.MaterialUtil;
-import com.Acrobot.ChestShop.Economy.Economy;
-import com.Acrobot.ChestShop.Events.TransactionEvent;
 import dev.tycho.stonks.api.event.TransactionLogEvent;
 import dev.tycho.stonks.model.logging.Transaction;
 import org.bukkit.event.EventHandler;
