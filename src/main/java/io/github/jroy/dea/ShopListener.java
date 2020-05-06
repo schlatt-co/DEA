@@ -34,7 +34,7 @@ public class ShopListener implements Listener {
 
     String message = ":shopping_cart:`" + event.getClient().getName() + "` " + verb + " `" +
         MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "` "
-        + preposition + " `" + ChatColor.stripColor(event.getSign().getLine(0)) + "`";
+        + preposition + " `" + ChatColor.stripColor(event.getSign().getLine(0)) + "` @ `x" + event.getSign().getLocation().getX() + ", y" + event.getSign().getLocation().getY() + ", z" + event.getSign().getLocation().getZ() + "`";
 
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
       webhookManager.sendMessage(message, true);
