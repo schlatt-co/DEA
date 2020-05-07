@@ -2,6 +2,7 @@ package io.github.jroy.dea;
 
 import com.Acrobot.Breeze.Utils.MaterialUtil;
 import com.Acrobot.ChestShop.Economy.Economy;
+import com.Acrobot.ChestShop.Events.SpyToggleEvent;
 import com.Acrobot.ChestShop.Events.TransactionEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -41,5 +42,10 @@ public class ShopListener implements Listener {
     } else {
       webhookManager.sendMessage(message, value >= 5000);
     }
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void onSpyToggle(SpyToggleEvent event) {
+    webhookManager.sendMessage(event.getPlayer().getName() + " set spy toggle to " + event.isEnabling(), true);
   }
 }
