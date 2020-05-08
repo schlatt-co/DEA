@@ -3,6 +3,7 @@ package io.github.jroy.dea;
 import club.minnced.discord.webhook.WebhookClient;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class WebhookManager implements Runnable {
 
@@ -30,23 +31,29 @@ public class WebhookManager implements Runnable {
   }
 
 
-  private void sendOldMessages(HashMap<Object, HashMap<String, RepeatedMessage>> map, WebhookClient client) {
+  private void sendOldMessages(HashMap<Object, HashMap<String, RepeatedMessage>> map, boolean forcePriority) {
     long millis = System.currentTimeMillis();
-
     for (Object sender : map.keySet()) {
       HashMap<String, RepeatedMessage> messageMap = map.get(sender);
-      for (String messageString : messageMap.keySet()) {
+      Iterator<String> i = messageMap.keySet().iterator();
+      while(i.hasNext()) {
+        String messageString = i.next();
         RepeatedMessage meta = messageMap.get(messageString);
         // Check if the message is old, if it is then send it and remove it from the map
         if (meta.isOld(millis)) {
           String newMessageString = messageString;
+          double value = meta.getTotalValue();
+          // If the message has been repeated add the repeat text
           if (meta.repeats > 1) {
-            newMessageString = "**x5** " + messageString;
-            if (meta.getTotalValue() > 0)
-              newMessageString += "   **total value `$" + String.valueOf(meta.getTotalValue()) + "`**";
+            newMessageString = "**x" + meta.getRepeats() + "**  " + messageString;
+            if (Math.abs(value) > 0)
+              newMessageString += "   **total value `$" + value + "`**";
           }
-          client.send(newMessageString);
-          messageMap.remove(messageString);
+          webhookClient.send(newMessageString);
+          if (forcePriority || Math.abs(value) >= 5000) {
+            priorityWebhookClient.send(newMessageString);
+          }
+          i.remove();
         }
       }
     }
@@ -76,8 +83,8 @@ public class WebhookManager implements Runnable {
 
   @Override
   public void run() {
-    sendOldMessages(messageMap, webhookClient);
-    sendOldMessages(priorityMessageMap, priorityWebhookClient);
+    sendOldMessages(messageMap, false);
+    sendOldMessages(priorityMessageMap, true);
   }
 
 

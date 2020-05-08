@@ -46,6 +46,6 @@ public class ShopListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onSpyToggle(SpyToggleEvent event) {
-    webhookManager.sendMessage(event.getPlayer().getName() + " set spy toggle to " + event.isEnabling(), true);
+    webhookManager.pushMessage(this, event.getPlayer().getName() + " set spy toggle to " + event.isEnabling(), true);
   }
 }
