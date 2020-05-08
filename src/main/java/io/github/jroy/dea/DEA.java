@@ -39,7 +39,8 @@ public class DEA extends JavaPlugin {
       getServer().getPluginManager().registerEvents(new BalanceListener(webhookManager), this);
     }
 
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(this, webhookManager, 0L, 20L); //0 Tick initial delay, 20 Tick (1 Second) between repeats
+    //noinspection deprecation - shut the fuck up
+    Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, webhookManager, 0L, 20L); //0 Tick initial delay, 20 Tick (1 Second) between repeats
 
 
   }

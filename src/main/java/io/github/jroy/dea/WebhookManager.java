@@ -88,7 +88,7 @@ public class WebhookManager implements Runnable {
   }
 
 
-  class RepeatedMessage {
+  static class RepeatedMessage {
     private int repeats;
     private final double individualValue;
     private long lastRepeatTime;
