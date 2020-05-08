@@ -33,6 +33,6 @@ public class BalanceListener implements Listener {
     String modifier = diff.signum() == -1 ? "decreased" : "increased";
     String emote = diff.signum() == -1 ? ":small_red_triangle_down:" : ":small_red_triangle:";
     String msg = emote + "`" + event.getPlayer().getName() + "`'s balance " + modifier + " by `$" + df.format(diff) + "`";
-    webhookManager.sendMessage(msg, diff.abs().doubleValue() >= 5000);
+    webhookManager.pushCurrencyMessage(this, msg, diff.abs().doubleValue() >= 5000, diff.doubleValue());
   }
 }

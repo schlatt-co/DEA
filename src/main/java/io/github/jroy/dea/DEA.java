@@ -2,6 +2,7 @@ package io.github.jroy.dea;
 
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.WebhookClientBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -37,5 +38,9 @@ public class DEA extends JavaPlugin {
     if (getServer().getPluginManager().getPlugin("Essentials") != null) {
       getServer().getPluginManager().registerEvents(new BalanceListener(webhookManager), this);
     }
+
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(this, webhookManager, 0L, 20L); //0 Tick initial delay, 20 Tick (1 Second) between repeats
+
+
   }
 }

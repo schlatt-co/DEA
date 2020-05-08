@@ -26,7 +26,7 @@ public class PayListener implements Listener {
     Pattern p = Pattern.compile(regex);
     Matcher m = p.matcher(msg);
     if (m.find() && m.groupCount() != 2) {
-      webhookManager.sendMessage("Error parsing \"" + msg + "\"", true);
+      webhookManager.pushMessage(this, "Error parsing \"" + msg + "\"", true);
       System.out.println(m.groupCount());
       System.out.println(msg);
       return;
@@ -35,7 +35,7 @@ public class PayListener implements Listener {
     String target = m.group(1);
     String amountString = m.group(2);
     double amount = Double.parseDouble(amountString);
-    webhookManager.sendMessage(":dollar:`" + sender + "` paid `" + target + "` `$" + amountString + "`",
-        amount >= 5000);
+    webhookManager.pushCurrencyMessage(this, ":dollar:`" + sender + "` paid `" + target + "` `$" + amountString + "`",
+        amount >= 5000, amount);
   }
 }

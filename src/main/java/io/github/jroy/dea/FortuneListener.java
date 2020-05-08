@@ -23,7 +23,7 @@ public class FortuneListener implements Listener {
           ":tools:`" + event.getPlayer().getName() + "` has used a `fortune " +
           item.getEnchantments().get(Enchantment.LOOT_BONUS_BLOCKS) + "` item!\n" +
           ":warning::warning::warning::warning::warning::warning:";
-      webhookManager.sendMessage(msg, true);
+      webhookManager.pushMessage(this, msg, true);
       event.getPlayer().getInventory().remove(item);
       event.setCancelled(true);
     }

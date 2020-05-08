@@ -37,9 +37,9 @@ public class ShopListener implements Listener {
         + preposition + " `" + ChatColor.stripColor(event.getSign().getLine(0)) + "` @ `x" + event.getSign().getLocation().getX() + ", y" + event.getSign().getLocation().getY() + ", z" + event.getSign().getLocation().getZ() + "`";
 
     if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
-      webhookManager.sendMessage(message, true);
+      webhookManager.pushCurrencyMessage(this, message, true, value);
     } else {
-      webhookManager.sendMessage(message, value >= 5000);
+      webhookManager.pushCurrencyMessage(this, message, value >= 5000, value);
     }
   }
 }
