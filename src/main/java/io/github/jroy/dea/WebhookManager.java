@@ -4,14 +4,15 @@ import club.minnced.discord.webhook.WebhookClient;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 public class WebhookManager implements Runnable {
 
   private final WebhookClient webhookClient;
   private final WebhookClient priorityWebhookClient;
 
-  private final HashMap<Object, HashMap<String, RepeatedMessage>> messageMap;
-  private final HashMap<Object, HashMap<String, RepeatedMessage>> priorityMessageMap;
+  private final HashMap<Object, LinkedHashMap<String, RepeatedMessage>> messageMap;
+  private final HashMap<Object, LinkedHashMap<String, RepeatedMessage>> priorityMessageMap;
 
 
   public WebhookManager(WebhookClient webhookClient, WebhookClient priorityWebhookClient) {
@@ -31,7 +32,7 @@ public class WebhookManager implements Runnable {
   }
 
 
-  private void sendOldMessages(HashMap<Object, HashMap<String, RepeatedMessage>> map, boolean forcePriority) {
+  private void sendOldMessages(HashMap<Object, LinkedHashMap<String, RepeatedMessage>> map, boolean forcePriority) {
     long millis = System.currentTimeMillis();
     for (Object sender : map.keySet()) {
       HashMap<String, RepeatedMessage> messageMap = map.get(sender);
@@ -60,11 +61,11 @@ public class WebhookManager implements Runnable {
   }
 
 
-  public void updateMessageInMap(HashMap<Object, HashMap<String, RepeatedMessage>> map,
+  public void updateMessageInMap(HashMap<Object, LinkedHashMap<String, RepeatedMessage>> map,
                                  Object sender, String message, double value) {
     // Insert a new entry into this map for the sender object
     if (!map.containsKey(sender)) {
-      map.put(sender, new HashMap<>());
+      map.put(sender, new LinkedHashMap<>());
     }
 
     // Get the messages hashmap from the main hashmap
