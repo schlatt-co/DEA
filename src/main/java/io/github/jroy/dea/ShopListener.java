@@ -22,7 +22,7 @@ public class ShopListener implements Listener {
     /*
       Notifications:
       All sells > $0
-      All buys > $5000
+      All buys > threshold
     */
     double value = event.getExactPrice().doubleValue();
     if (value == 0) return;
@@ -37,10 +37,10 @@ public class ShopListener implements Listener {
         MaterialUtil.getItemList(event.getStock()) + "` @ `" + Economy.formatBalance(event.getExactPrice()) + "` "
         + preposition + " `" + ChatColor.stripColor(event.getSign().getLine(0)) + "` @ `x" + event.getSign().getLocation().getX() + ", y" + event.getSign().getLocation().getY() + ", z" + event.getSign().getLocation().getZ() + "`";
 
-    if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= 5000) {
+    if (event.getTransactionType() == TransactionEvent.TransactionType.BUY && value >= DEA.PRIORITY_BALANCE) {
       webhookManager.pushCurrencyMessage(this, message, true, value);
     } else {
-      webhookManager.pushCurrencyMessage(this, message, value >= 5000, value);
+      webhookManager.pushCurrencyMessage(this, message, value >= DEA.PRIORITY_BALANCE, value);
     }
   }
 

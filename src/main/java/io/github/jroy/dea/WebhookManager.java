@@ -51,7 +51,7 @@ public class WebhookManager implements Runnable {
               newMessageString += "   **total value `$" + value + "`**";
           }
           webhookClient.send(newMessageString);
-          if (forcePriority || Math.abs(value) >= 5000) {
+          if (forcePriority || Math.abs(value) >= DEA.PRIORITY_BALANCE) {
             priorityWebhookClient.send(newMessageString);
           }
           i.remove();

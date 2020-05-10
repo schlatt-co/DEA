@@ -36,6 +36,6 @@ public class PayListener implements Listener {
     String amountString = m.group(2);
     double amount = Double.parseDouble(amountString);
     webhookManager.pushCurrencyMessage(this, ":dollar:`" + sender + "` paid `" + target + "` `$" + amountString + "`",
-        amount >= 5000, amount);
+        amount >= DEA.PRIORITY_BALANCE, amount);
   }
 }

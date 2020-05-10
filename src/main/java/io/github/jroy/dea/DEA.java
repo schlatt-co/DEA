@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public class DEA extends JavaPlugin {
 
+  public static double PRIORITY_BALANCE = 10000;
+
   @Override
   public void onEnable() {
     getConfig().addDefault("webhookUrl", "url");
