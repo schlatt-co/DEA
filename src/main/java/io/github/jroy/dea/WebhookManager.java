@@ -115,8 +115,8 @@ public class WebhookManager implements Runnable {
     }
 
     public boolean isOld(long currentMillis) {
-      // if the message is 4 seconds old then it is "old"
-      return (currentMillis - lastRepeatTime >= 4000);
+      // if the message is 10 seconds old then it is "old"
+      return (currentMillis - lastRepeatTime >= 10000);
     }
 
   }
